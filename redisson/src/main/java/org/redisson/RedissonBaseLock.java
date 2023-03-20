@@ -119,6 +119,9 @@ public abstract class RedissonBaseLock extends RedissonExpirable implements RLoc
         return id + ":" + threadId;
     }
 
+    /**
+     * 续租过期时间
+     */
     private void renewExpiration() {
         ExpirationEntry ee = EXPIRATION_RENEWAL_MAP.get(getEntryName());
         if (ee == null) {
@@ -157,7 +160,11 @@ public abstract class RedissonBaseLock extends RedissonExpirable implements RLoc
         
         ee.setTimeout(task);
     }
-    
+
+    /**
+     * 发起续锁的定时任务发起续锁的定时任务
+     * @param threadId
+     */
     protected void scheduleExpirationRenewal(long threadId) {
         ExpirationEntry entry = new ExpirationEntry();
         ExpirationEntry oldEntry = EXPIRATION_RENEWAL_MAP.putIfAbsent(getEntryName(), entry);
