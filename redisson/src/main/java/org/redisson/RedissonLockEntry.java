@@ -25,10 +25,20 @@ import java.util.concurrent.Semaphore;
  *
  */
 public class RedissonLockEntry implements PubSubEntry<RedissonLockEntry> {
-
+    /**
+     * 计数器
+     *
+     * 每次发起订阅，则计数器 + 1
+     * 每次取消订阅，则计数器 - 1 。当减少到 0 时，才正常取消订阅。
+     */
     private volatile int counter;
-
+    /**
+     * 信号量，用于实现 RedissonLock 阻塞等待的通知
+     */
     private final Semaphore latch;
+    /**
+     * 监听器们
+     */
     private final CompletableFuture<RedissonLockEntry> promise;
     private final ConcurrentLinkedQueue<Runnable> listeners = new ConcurrentLinkedQueue<Runnable>();
 
