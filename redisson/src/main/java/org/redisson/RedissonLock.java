@@ -169,7 +169,7 @@ public class RedissonLock extends RedissonBaseLock {
         });
         return new CompletableFutureWrapper<>(f);
     }
-
+    // 看门狗 的真正逻辑方法
     private <T> RFuture<Long> tryAcquireAsync(long waitTime, long leaseTime, TimeUnit unit, long threadId) {
         RFuture<Long> ttlRemainingFuture;
         if (leaseTime > 0) {
@@ -199,7 +199,7 @@ public class RedissonLock extends RedissonBaseLock {
     public boolean tryLock() {
         return get(tryLockAsync());
     }
-
+    // 不设置过期时间， 获取锁的方法
     <T> RFuture<T> tryLockInnerAsync(long waitTime, long leaseTime, TimeUnit unit, long threadId, RedisStrictCommand<T> command) {
         return evalWriteAsync(getRawName(), LongCodec.INSTANCE, command,
                 "if ((redis.call('exists', KEYS[1]) == 0) " +
