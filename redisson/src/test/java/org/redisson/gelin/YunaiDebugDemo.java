@@ -15,7 +15,7 @@ public class YunaiDebugDemo {
     public static void main(String[] args) throws InterruptedException {
         Config config = new Config();
         config.useSingleServer()
-                .setAddress("redis://redis.ops.lizhi.fm:6379");
+                .setAddress("redis://127.0.0.1:6379");
         // 创建 RedissonClient 对象
         RedissonClient client = Redisson.create();
 
